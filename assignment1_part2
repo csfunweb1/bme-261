@@ -1,0 +1,38 @@
+const int redPin = 7;
+const int greenPin = 5;
+const int bluePin = 6;
+
+const int sensorPin = A0;
+int sensorValue;
+
+void setup() {
+  pinMode(redPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
+  pinMode(sensorPin, INPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  sensorValue = analogRead(sensorPin);
+  Serial.println(sensorValue); // for calibration
+
+  if (sensorValue < 300) {
+    // Dark condition – red
+    setColor(255, 0, 0);
+  } else if (sensorValue > 700) {
+    // Bright condition – green (dimmed)
+    setColor(0, 50, 0);
+  } else {
+    // Ambient – blue
+    setColor(0, 0, 255);
+  }
+
+  delay(200);
+}
+
+void setColor(int red, int green, int blue) {
+  analogWrite(redPin, red);
+  analogWrite(greenPin, green);
+  analogWrite(bluePin, blue);
+}
